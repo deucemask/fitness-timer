@@ -31,10 +31,16 @@ public class HomeActivity extends Activity {
 
     @Override
     public void onStop() {
-        beepSound.release();
-        beepSound = null;
-        startSound.release();
-        startSound = null;
+        if (beepSound != null) {
+            beepSound.release();
+            beepSound = null;
+        }
+
+        if (startSound != null) {
+            startSound.release();
+            startSound = null;
+        }
+
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onStop();
     }
@@ -50,7 +56,10 @@ public class HomeActivity extends Activity {
         conf.setLapTime(getEditTextValueInt(R.id.tracker_lap_time));
         conf.setPause(getEditTextValueInt(R.id.tracker_pause));
 
-        startSound.start();
+        if(startSound != null) {
+            startSound.start();
+        }
+
 
         this.job = new TimeTrackerJob(conf, createTrackerListener());
         this.job.start();
